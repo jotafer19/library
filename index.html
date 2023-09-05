@@ -5,22 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <form action="#" method="post" id="book-information">
+    <dialog id="new-book-dialog">
+        <form action="#" method="post" id="book-information">
             <label for="book-title">Title</label>
-            <input type="text" name="book-title" id="book-title">
+            <input type="text" name="book-title" id="book-title" required>
             <label for="book-author">Author</label>
-            <input type="text" name="book-author" id="book-author">
+            <input type="text" name="book-author" id="book-author" required>
             <label for="book-pages">Pages</label>
-            <input type="text" name="book-pages" id="book-pages">
-            <fieldset id="radio-buttons">
-                <input type="radio" name="book-read" id="already-read" value="1" checked>
-                <label for="already-read">Yes</label>
-                <input type="radio" name="book-read" id="not-read-yet" value="0">
-                <label for="not-read-yet">No</label>
-            </fieldset>
-        <button type="submit" id="submit-info">Add book</button>
-    </form>
+            <input type="text" name="book-pages" id="book-pages" required>
+            <label for="book-read">Have you read the book?</label>
+            <input type="checkbox" name="book-read" id="book-read" value="asda">
+            <button type="submit" id="submit-info">Add book</button>
+            <button type="button" id="close-dialog">Close</button>
+        </form>
+    </dialog>
+    <button id="new-book">New Book</button>
+    <main id="container">
+    </main>
 </body>
 </html>

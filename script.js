@@ -2,42 +2,86 @@ const myForm = document.querySelector("#book-information");
 const bookTitle = document.querySelector("#book-title");
 const bookAuthor = document.querySelector("#book-author");
 const bookPages = document.querySelector("#book-pages");
-const choiceRead = document.querySelectorAll("[name='book-read']");
+const bookRead = document.querySelector("#book-read");
 const submitButton = document.querySelector("#submit-info");
-const myLibrary = [];
+const newBookButton = document.querySelector("#new-book");
+const newBookDialog = document.querySelector("#new-book-dialog");
+const closeDialog = document.querySelector("#close-dialog");
+const container = document.querySelector("#container")
+
+const book1 = {
+    title: "Harry Potter",
+    author: "Rowling",
+    pages: "350",
+    read: "not read yet",
+};
+const book2 = {
+    title: "The Lord of the Rings",
+    author: "Tolkien",
+    pages: "323",
+    read: "already read",
+};
+
+const myLibrary = [book1, book2, book1, book2]
+
+for (let i of myLibrary) {
+    createCard(i);
+}
+
+// ------- BOOK OBJECT -------
 
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = (read) ? "already read" : "not read yet";
+    this.read = (read) ? true : false;
 }
 
 Book.prototype.info = function() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}.`
 }
 
-function addBookToLibrary(newBook, myLibrary) {
-    myLibrary.push(newBook);
+// ------- FUNCTIONS -------
+
+function addBookToLibrary(myLibrary) {
+    const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
+    myLibrary.unshift(newBook);
+    createCard(newBook);
+    myForm.reset();
 }
 
-function checkBookRead(choiceRead) {
-    for (let i = 0; i < choiceRead.length; i++) {
-        if (choiceRead[i].checked) {
-            if (choiceRead[i].value === "1") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+function createCard(book) {
+    let title = document.createElement("div");
+    title.classList.add("title");
+    title.textContent = book.title;
+    let author = document.createElement("div");
+    author.classList.add("author");
+    author.textContent = `by ${book.author}`;
+    let pages = document.createElement("div");
+    pages.classList.add("pages");
+    pages.textContent = `${book.pages} pages`;
+    let card = document.createElement("div");
+    card.classList.add("card");
+    card.appendChild(title);
+    card.appendChild(author);
+    card.appendChild(pages);
+    container.prepend(card);
+    
 }
 
-submitButton.addEventListener("click", (event) => {
+// ------- EVENTS -------
+
+newBookButton.addEventListener("click", () => {
+    newBookDialog.showModal();
+})
+
+myForm.addEventListener("submit", (event) => {
+    addBookToLibrary(myLibrary);
     event.preventDefault();
-    const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, checkBookRead(choiceRead));
-    console.log(newBook.info())
-    addBookToLibrary(newBook, myLibrary);
-    console.log(myLibrary);
+    newBookDialog.close();
+})
+
+closeDialog.addEventListener("click", (event) => {
+    newBookDialog.close();
     myForm.reset();
 })
