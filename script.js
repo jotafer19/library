@@ -4,23 +4,13 @@ const bookAuthor = document.querySelector("#book-author");
 const bookPages = document.querySelector("#book-pages");
 const bookRead = document.querySelector("#book-read");
 const submitButton = document.querySelector("#submit-info");
-const newBookButton = document.querySelector("#new-book");
+const newBookButton = document.querySelector("#new-book-button");
 const newBookDialog = document.querySelector("#new-book-dialog");
 const closeDialog = document.querySelector("#close-dialog");
 const container = document.querySelector("#container");
 
-const book1 = {
-    title: "Harry Potter",
-    author: "Rowling",
-    pages: "350",
-    read: "not read yet",
-};
-const book2 = {
-    title: "The Lord of the Rings",
-    author: "Tolkien",
-    pages: "323",
-    read: "already read",
-};
+const book1 = new Book("Harry Potter", "J.K. Rowling", 295, true);
+const book2 = new Book("The Lord of the Rings", "Tolkien", 500, false);
 
 const myLibrary = [book1, book1, book2, book1, book1, book1]
 
@@ -29,6 +19,7 @@ for (let i of myLibrary) {
 }
 
 const deleteButton = document.querySelectorAll(".delete-btn");
+const readStatusButton = document.querySelectorAll(".read-status"); 
 
 // ------- BOOK OBJECT -------
 
@@ -36,13 +27,20 @@ function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = (read) ? true : false;
+    this.read = (read) ? "Read" : "Not read";
 }
 
 Book.prototype.info = function() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}.`
 }
 
+Book.prototype.changeReadStatus = function() {
+    if (this.read === "Read") {
+        this.read = "Not read";
+    } else if (this.read === "Not read") {
+        this.read = "Read";
+    }
+}
 // ------- FUNCTIONS -------
 
 function addBookToLibrary(myLibrary) {
@@ -51,6 +49,10 @@ function addBookToLibrary(myLibrary) {
     createCard(newBook);
     setBookPosition(myLibrary);
     myForm.reset();
+}
+
+function checkRepeatedTitle(book, myLibrary) {
+
 }
 
 function createCard(book) {
@@ -63,16 +65,22 @@ function createCard(book) {
     let pages = document.createElement("div");
     pages.classList.add("pages");
     pages.textContent = `${book.pages} pages`;
+    let readStatus = document.createElement("button");
+    readStatus.textContent = book.read;
+    readStatus.classList.add("read-status");
+    readStatus.setAttribute("data-book", book.title);
     let card = document.createElement("div");
     card.classList.add("card");
-    let button = document.createElement("button");
-    button.textContent = "DELETE";
-    button.classList.add("delete-btn")
-    button.setAttribute("data-book", book.title);
+    card.setAttribute("data-book", book.title);
+    let deleteButton = document.createElement("button");
+    deleteButton.textContent = "DELETE";
+    deleteButton.classList.add("delete-btn")
+    deleteButton.setAttribute("data-book", book.title);
     card.appendChild(title);
     card.appendChild(author);
     card.appendChild(pages);
-    card.appendChild(button);
+    card.appendChild(readStatus)
+    card.appendChild(deleteButton);
     card.setAttribute("data-book", book.title);
     container.prepend(card); 
 }
@@ -89,7 +97,13 @@ myForm.addEventListener("submit", (event) => {
     newBookDialog.close();
 })
 
-closeDialog.addEventListener("click", (event) => {
+newBookDialog.addEventListener("click", (event) => {
+    if (event.target.id !== "book-information") { // If click outside the form, close the dialog
+        newBookDialog.close();
+    }
+})
+
+closeDialog.addEventListener("click", () => {
     newBookDialog.close();
     myForm.reset();
 })
@@ -101,6 +115,18 @@ deleteButton.forEach(button => {
                 myLibrary.splice(myLibrary.indexOf(item), 1);
                 console.log(myLibrary);
                 button.parentElement.remove()
+            }
+        }
+    })
+})
+
+readStatusButton.forEach(button => {
+    button.addEventListener("click", () => {
+        for (let item of myLibrary) {
+            if (item.title === button.parentElement.dataset.book) {
+                item.changeReadStatus();
+                console.log(item.read);
+                button.textContent = item.read;
             }
         }
     })

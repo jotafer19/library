@@ -1,7 +1,100 @@
+:root {
+    box-sizing: border-box;
+    --general-padding: 20px;
+    --button-font-size: 1.1rem;
+    --border-radius: 12px;
+    --background-primary-color: #eaeaea;
+    --green-button-color: #a8e6a1;
+    --red-button-color: #e55e5e;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ------- HEADER ------- */
+
+#header {
+    padding: var(--general-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#new-book-button {
+    padding: 16px 30px;
+    font-size: var(--button-font-size);
+}
+
+/* ------- DIALOG ------- */
+
+#new-book-container {
+    padding: var(--general-padding);
+    margin: 0 auto;
+    background-color: var(--background-primary-color);
+    text-align: center;
+    width: 100%;
+}
+
+#new-book-dialog {
+    background-color: aqua;
+    border-radius: var(--border-radius);
+    position: fixed;
+    padding: 0;
+}
+
+#new-book-header {
+    font-size: 1.5rem;
+}
+
+#book-information { 
+    background-color: var(--background-primary-color);
+    padding: var(--general-padding);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    text-align: center;
+}
+
+input[type="text"] {
+    box-sizing: border-box;
+    border: none;
+    border-radius: var(--border-radius);
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+#submit-info {
+    width: 100%;
+    font-size: var(--button-font-size);
+    background-color: var(--green-button-color);
+    padding: 16px 30px;
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+#close-dialog {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--red-button-color);
+}
+
+/* ------- MAIN ------- */
+
+
 #container {
-    background-color: bisque;
+    margin: 0 auto;
+    background-color: var(--background-primary-color);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-auto-rows: 150px;
     gap: 30px;
 }
