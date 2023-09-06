@@ -7,7 +7,7 @@ const submitButton = document.querySelector("#submit-info");
 const newBookButton = document.querySelector("#new-book");
 const newBookDialog = document.querySelector("#new-book-dialog");
 const closeDialog = document.querySelector("#close-dialog");
-const container = document.querySelector("#container")
+const container = document.querySelector("#container");
 
 const book1 = {
     title: "Harry Potter",
@@ -22,11 +22,13 @@ const book2 = {
     read: "already read",
 };
 
-const myLibrary = [book1, book2, book1, book2]
+const myLibrary = [book1, book1, book2, book1, book1, book1]
 
 for (let i of myLibrary) {
     createCard(i);
 }
+
+const deleteButton = document.querySelectorAll(".delete-btn");
 
 // ------- BOOK OBJECT -------
 
@@ -47,6 +49,7 @@ function addBookToLibrary(myLibrary) {
     const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
     myLibrary.unshift(newBook);
     createCard(newBook);
+    setBookPosition(myLibrary);
     myForm.reset();
 }
 
@@ -62,11 +65,16 @@ function createCard(book) {
     pages.textContent = `${book.pages} pages`;
     let card = document.createElement("div");
     card.classList.add("card");
+    let button = document.createElement("button");
+    button.textContent = "DELETE";
+    button.classList.add("delete-btn")
+    button.setAttribute("data-book", book.title);
     card.appendChild(title);
     card.appendChild(author);
     card.appendChild(pages);
-    container.prepend(card);
-    
+    card.appendChild(button);
+    card.setAttribute("data-book", book.title);
+    container.prepend(card); 
 }
 
 // ------- EVENTS -------
@@ -84,4 +92,16 @@ myForm.addEventListener("submit", (event) => {
 closeDialog.addEventListener("click", (event) => {
     newBookDialog.close();
     myForm.reset();
+})
+
+deleteButton.forEach(button => {
+    button.addEventListener("click", () => {
+        for (let item of myLibrary) {
+            if (item.title === button.dataset.book) {
+                myLibrary.splice(myLibrary.indexOf(item), 1);
+                console.log(myLibrary);
+                button.parentElement.remove()
+            }
+        }
+    })
 })
