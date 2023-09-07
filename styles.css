@@ -1,17 +1,26 @@
 :root {
-    box-sizing: border-box;
     --general-padding: 20px;
-    --button-font-size: 1.1rem;
+    --font-size: 1.3rem;
     --border-radius: 12px;
     --background-primary-color: #eaeaea;
     --green-button-color: #a8e6a1;
-    --red-button-color: #e55e5e;
+    --red-button-color: #d23333;
+    --blue-button-color: #89c2fb;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+    height: 100svh;
+    background-color: var(--background-primary-color);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: var(--font-size);
 }
 
 /* ------- HEADER ------- */
@@ -25,7 +34,7 @@ body {
 
 #new-book-button {
     padding: 16px 30px;
-    font-size: var(--button-font-size);
+    font-size: var(--font-size);
 }
 
 /* ------- DIALOG ------- */
@@ -39,10 +48,12 @@ body {
 }
 
 #new-book-dialog {
+    margin: auto auto;
     background-color: aqua;
     border-radius: var(--border-radius);
     position: fixed;
     padding: 0;
+    box-shadow: 0 0 0 9999px #000000ca;
 }
 
 #new-book-header {
@@ -59,7 +70,8 @@ body {
     text-align: center;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
     box-sizing: border-box;
     border: none;
     border-radius: var(--border-radius);
@@ -68,13 +80,22 @@ input[type="text"] {
     font-size: 1rem;
 }
 
-#submit-info {
+#submit-info,
+#reset-info, 
+.read-status {
     width: 100%;
-    font-size: var(--button-font-size);
-    background-color: var(--green-button-color);
-    padding: 16px 30px;
+    font-size: var(--font-size);
+    padding: 10px 24px;
     border: none;
     border-radius: var(--border-radius);
+}
+
+#submit-info {
+    background-color: var(--green-button-color);
+}
+
+#reset-info {
+    background-color: var(--blue-button-color);
 }
 
 #close-dialog {
@@ -89,16 +110,53 @@ input[type="text"] {
 
 /* ------- MAIN ------- */
 
-
 #container {
     margin: 0 auto;
-    background-color: var(--background-primary-color);
+    padding: var(--general-padding);
+    max-width: 1200px;
+    
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-auto-rows: 150px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: 250px;
     gap: 30px;
 }
 
 .card {
-    background-color: rgb(65, 190, 222);
+    background-color: rgb(247, 244, 244);
+    padding: var(--general-padding);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 5px 5px 10px 3px rgb(155, 155, 155);
+    word-break: break-all;
+    position: relative;
+}
+
+.card .title {
+    font-style: italic;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.read-status {
+    background-color: var(--green-button-color);
+}
+
+.delete-btn {
+    border: none;
+    align-self: end;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: transparent;
+}
+
+.material-symbols-outlined {
+    color: var(--red-button-color);
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24,
 }

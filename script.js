@@ -47,12 +47,7 @@ function addBookToLibrary(myLibrary) {
     const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
     myLibrary.unshift(newBook);
     createCard(newBook);
-    setBookPosition(myLibrary);
     myForm.reset();
-}
-
-function checkRepeatedTitle(book, myLibrary) {
-
 }
 
 function createCard(book) {
@@ -74,7 +69,8 @@ function createCard(book) {
     card.setAttribute("data-book", book.title);
     let deleteButton = document.createElement("button");
     deleteButton.textContent = "DELETE";
-    deleteButton.classList.add("delete-btn")
+    deleteButton.classList.add("delete-btn");
+    deleteButton.classList.add("material-symbols-outlined");
     deleteButton.setAttribute("data-book", book.title);
     card.appendChild(title);
     card.appendChild(author);
@@ -98,14 +94,13 @@ myForm.addEventListener("submit", (event) => {
 })
 
 newBookDialog.addEventListener("click", (event) => {
-    if (event.target.id !== "book-information") { // If click outside the form, close the dialog
+    if (event.target.className !== "add-book-input") { // If click outside the form, close the dialog
         newBookDialog.close();
     }
 })
 
 closeDialog.addEventListener("click", () => {
     newBookDialog.close();
-    myForm.reset();
 })
 
 deleteButton.forEach(button => {
