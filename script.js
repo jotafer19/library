@@ -9,17 +9,19 @@ const newBookDialog = document.querySelector("#new-book-dialog");
 const closeDialog = document.querySelector("#close-dialog");
 const container = document.querySelector("#container");
 
-const book1 = new Book("Harry Potter", "J.K. Rowling", 295, true);
-const book2 = new Book("The Lord of the Rings", "Tolkien", 500, false);
+const book1 = new Book("Harry Potter and the Prisoner of Azkaban", "J.K. Rowling", 480, false);
+const book2 = new Book("The Fellowship of the Ring", "J. R. R. Tolkien", 423, true);
+const book3 = new Book("The Final Empire: Mistborn", "Brandon Sanderson", 544, true)
 
-const myLibrary = [book1, book1, book2, book1, book1, book1]
+let myLibrary = [book1, book2, book3]
+
 
 for (let i of myLibrary) {
     createCard(i);
 }
 
-const deleteButton = document.querySelectorAll(".delete-btn");
-const readStatusButton = document.querySelectorAll(".read-status"); 
+let deleteButton = document.querySelectorAll(".delete-btn");
+let readStatusButton = document.querySelectorAll(".read-status"); 
 
 // ------- BOOK OBJECT -------
 
@@ -41,13 +43,32 @@ Book.prototype.changeReadStatus = function() {
         this.read = "Read";
     }
 }
+
 // ------- FUNCTIONS -------
+
+function updateNodeList() {
+    deleteButton.forEach((button) => {
+        button.removeEventListener('click', searchBookToDelete);
+    });
+    deleteButton = document.querySelectorAll(".delete-btn");
+    deleteButton.forEach(button => {
+        button.addEventListener("click", () => {
+            console.log("hey");
+            searchBookToDelete(myLibrary, button);
+        })
+    })
+
+    
+  }
 
 function addBookToLibrary(myLibrary) {
     const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
     myLibrary.unshift(newBook);
     createCard(newBook);
+    console.log(myLibrary);
     myForm.reset();
+    updateNodeList();
+    
 }
 
 function createCard(book) {
@@ -78,7 +99,7 @@ function createCard(book) {
     card.appendChild(readStatus)
     card.appendChild(deleteButton);
     card.setAttribute("data-book", book.title);
-    container.prepend(card); 
+    container.prepend(card);
 }
 
 // ------- EVENTS -------
@@ -103,15 +124,20 @@ closeDialog.addEventListener("click", () => {
     newBookDialog.close();
 })
 
+function searchBookToDelete(myLibrary, button) {
+    for (let item of myLibrary) {
+        if (item.title === button.dataset.book) {
+            myLibrary.splice(myLibrary.indexOf(item), 1);
+            console.log(myLibrary);
+            button.parentElement.remove()
+        }
+    }
+}
+
 deleteButton.forEach(button => {
     button.addEventListener("click", () => {
-        for (let item of myLibrary) {
-            if (item.title === button.dataset.book) {
-                myLibrary.splice(myLibrary.indexOf(item), 1);
-                console.log(myLibrary);
-                button.parentElement.remove()
-            }
-        }
+        console.log("hey");
+        searchBookToDelete(myLibrary, button);
     })
 })
 

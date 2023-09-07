@@ -1,6 +1,6 @@
 :root {
     --general-padding: 20px;
-    --font-size: 1.3rem;
+    --font-size: 1.1rem;
     --border-radius: 12px;
     --background-primary-color: #eaeaea;
     --green-button-color: #a8e6a1;
@@ -57,7 +57,7 @@ body {
 }
 
 #new-book-header {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 #book-information { 
@@ -129,13 +129,14 @@ input[type="number"] {
     align-items: center;
     gap: 10px;
     box-shadow: 5px 5px 10px 3px rgb(155, 155, 155);
-    word-break: break-all;
     position: relative;
+    text-align: center;
+    word-break: break-word;;
 }
 
 .card .title {
     font-style: italic;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
 }
 
@@ -150,6 +151,10 @@ input[type="number"] {
     bottom: 12px;
     right: 12px;
     background-color: transparent;
+}
+
+.delete-btn:hover {
+    background-color: aqua;
 }
 
 .material-symbols-outlined {
