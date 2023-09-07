@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>🔖 myLibrary</title>
     <script src="./script.js" defer></script>
     <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="header-container">
-        <header id="header">
-            <div id="logo">myLibrary</div>
+    <header id="header">
+        <div id="header-container">
+            <div id="logo"><h1>myLibrary</h1></div>
             <div class="backlog">
-                <p id="total-books">Total books: </p>
-                <p id="books-read">Books read: </p>
-                <p id="not-read">Backlog: </p>
+                <p>Total books: <span id="total-books">0</span></span></p> 
+                <p>Books read: <span id="books-read">0</span></p>
+                <p>Backlog: <span id="not-read">0</span> </p>
             </div>
-    </div>
+        </div>
     </header>
     <div id="new-book-container">
-        <button id="new-book-button">New Book</button>
+        <button id="new-book-button"><span class="material-symbols-outlined">
+            add
+            </span></button>
     </div>
     <dialog id="new-book-dialog">
         <form action="#" method="post" class="add-book-input" id="book-information">
