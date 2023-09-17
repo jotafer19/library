@@ -1,6 +1,6 @@
 <div align="center">
     <img alt="logo" src="./images/webpage-icon.png" style="height: 100px">
-    <h1>Web Form </h1>
+    <h1>myLibrary </h1>
     <p>Simple webpage form</p>
     <p>
         <a href="https://jotafer19.github.io/library/" target="_blank" rel="noreferrer noopener">View Demo</a> · 
