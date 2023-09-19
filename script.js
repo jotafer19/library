@@ -11,72 +11,85 @@ const container = document.querySelector("#container");
 const totalBooksCount = document.querySelector("#total-books");
 const totalReadBooksCount = document.querySelector("#books-read");
 const totalBooksBackloggedCount = document.querySelector("#not-read");
+let deleteButton = document.getElementsByClassName("delete-btn");
+let readStatusButtonButton = document.querySelectorAll(".read-status"); 
 
-function countBooks(myLibrary) {
-    let totalBooks = 0;
-    let totalReadBooks = 0;
-    let totalBackloggedBooks = 0;
-    for (let i = 0; i < myLibrary.length; i++) {
-        totalBooks += 1;
-        if (myLibrary[i].read === "Read") {
-            totalReadBooks += 1;
-        } else {
-            totalBackloggedBooks += 1;
+// // ------- LIBRARY CLASS -------
+
+class Library{
+    constructor() {
+        this.library = [];
+    }
+
+    addBook(newBook) {
+        this.library.unshift(newBook);
+        createCard(newBook);
+    }
+
+    removeBook(bookToRemove) {
+        console.log(bookToRemove)
+        for (let book of this.library) {
+            console.log(book)
+            if (book.title === bookToRemove.dataset.book) {
+                this.library.splice(this.library.indexOf(book), 1);
+            }
         }
     }
-    totalBooksCount.textContent = totalBooks;
-    totalReadBooksCount.textContent = totalReadBooks;
-    totalBooksBackloggedCount.textContent = totalBackloggedBooks;
+
+    count() {
+        let totalBooks = this.library.length;
+        let totalReadBooks = 0;
+        let totalBooksBacklogged = 0;
+
+        for (let book of this.library) {
+            if (book.read === "Read") {
+                totalReadBooks += 1;
+            } else {
+                totalBooksBacklogged += 1;
+            }
+        }
+        totalBooksCount.textContent = totalBooks;
+        totalReadBooksCount.textContent = totalReadBooks;
+        totalBooksBackloggedCount.textContent = totalBooksBacklogged;
+    }
+}
+
+
+// ------- BOOK CLASS -------
+
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = (read) ? "Read" : "Not read";
+    }
+
+    info() {
+        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}.`
+    }
+
+    changeReadStatus() {
+        if (this.read === "Read") {
+            this.read = "Not read";
+        } else if (this.read === "Not read") {
+            this.read = "Read";
+        }
+    }
 }
 
 const book1 = new Book("Harry Potter and the Prisoner of Azkaban", "J.K. Rowling", 480, false);
 const book2 = new Book("The Fellowship of the Ring", "J. R. R. Tolkien", 423, true);
 const book3 = new Book("The Final Empire: Mistborn", "Brandon Sanderson", 544, true)
 
-let myLibrary = [book1, book2, book3]
+const myLibrary = new Library();
+myLibrary.addBook(book1);
+myLibrary.addBook(book2);
+myLibrary.addBook(book3);
+myLibrary.count();
 
-
-for (let i = myLibrary.length - 1; i >= 0; i--) {
-    createCard(myLibrary[i]);
-}
-countBooks(myLibrary);
-
-let deleteButton = document.getElementsByClassName("delete-btn");
-let readStatusButtonButton = document.querySelectorAll(".read-status"); 
-
-// ------- BOOK OBJECT -------
-
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = (read) ? "Read" : "Not read";
-}
-
-Book.prototype.info = function() {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}.`
-}
-
-Book.prototype.changeReadStatus = function() {
-    if (this.read === "Read") {
-        this.read = "Not read";
-    } else if (this.read === "Not read") {
-        this.read = "Read";
-    }
-}
 
 // ------- FUNCTIONS -------
-
-function addBookToLibrary(myLibrary) {
-    const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
-    myLibrary.unshift(newBook);
-    createCard(newBook);
-    console.log(myLibrary);
-    countBooks(myLibrary);
-    myForm.reset();
-   
-}
-
 function createCard(book) {
     let title = document.createElement("div");
     title.classList.add("title");
@@ -145,21 +158,14 @@ function createCard(book) {
     })
 
     readStatusButton.addEventListener("click", () => {
-        countBooks(myLibrary);
+        myLibrary.count();
     })
 
-    deleteButton.addEventListener("click", () => {
+    deleteButton.addEventListener("click", (event) => {
         card.remove();
-        for (let item of myLibrary) {
-            if (item.title === deleteButton.dataset.book){
-                myLibrary.splice(myLibrary.indexOf(item), 1);
-            }
-        }
-        console.log(myLibrary);
-    })
-
-    deleteButton.addEventListener("click", () => {
-        countBooks(myLibrary);  
+        myLibrary.removeBook(event.target)
+        myLibrary.count(); 
+        console.log(myLibrary.library); 
     })
 }
 
@@ -170,8 +176,10 @@ newBookButton.addEventListener("click", () => {
 })
 
 myForm.addEventListener("submit", (event) => {
-    addBookToLibrary(myLibrary);
+    let newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
+    myLibrary.addBook(newBook);
     event.preventDefault();
+    myForm.reset();
     newBookDialog.close();
 })
 
